@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>App Feature Survey</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #000000;
+      --card-bg: #121212;
+      --card-border: #262626;
+      --primary: #14b8a6;
+      --primary-hover: #0d9488;
+      --primary-light: #2dd4bf;
+      --accent: #2dd4bf;
+      --text-main: #f5f5f5;
+      --text-muted: #a3a3a3;
+      --success: #14b8a6;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --radius: 16px;
+      --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.8);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-color);
+      color: var(--text-main);
+      min-height: 100vh;
+      padding: 24px 16px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      line-height: 1.5;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 900px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 32px;
+      box-shadow: var(--shadow);
+      position: relative;
+    }
+
+    header {
+      margin-bottom: 32px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      background: linear-gradient(to right, #f5f5f5, #2dd4bf);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+    }
+
+    header p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .section-card {
+      background: #18181b;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 28px;
+    }
+
+    .section-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .badge {
+      font-size: 0.8rem;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .badge-pending {
+      background: rgba(245, 158, 11, 0.15);
+      color: var(--warning);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    .badge-valid {
+      background: rgba(20, 184, 166, 0.15);
+      color: var(--primary-light);
+      border: 1px solid rgba(20, 184, 166, 0.4);
+    }
+
+    .badge-error {
+      background: rgba(239, 68, 68, 0.15);
+      color: var(--danger);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    /* Part 1: App Selection Grid */
+    .app-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 12px;
+    }
+
+    .app-option {
+      position: relative;
+    }
+
+    .app-option input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .app-label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 12px;
+      background: #27272a;
+      border: 1px solid #3f3f46;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: all 0.2s ease;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    .app-option input[type="radio"]:checked+.app-label {
+      background: rgba(20, 184, 166, 0.18);
+      border-color: var(--primary-light);
+      color: #ffffff;
+      box-shadow: 0 0 15px rgba(45, 212, 191, 0.25);
+      transform: translateY(-2px);
+    }
+
+    .app-label:hover {
+      border-color: var(--primary-light);
+      color: var(--text-main);
+    }
+
+    /* Part 2: Image Rows */
+    .instructions {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+
+    .rows-container {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .image-row-card {
+      background: #27272a;
+      border: 1px solid #3f3f46;
+      border-radius: 12px;
+      padding: 16px;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+    }
+
+    .image-row-card:hover {
+      border-color: var(--primary-light);
+      transform: translateY(-2px);
+    }
+
+    .image-row-card.selected {
+      background: #1f292d;
+      border-color: var(--primary-light);
+      box-shadow: 0 4px 20px rgba(20, 184, 166, 0.2);
+    }
+
+    .row-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .row-checkbox-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    .custom-checkbox {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      border: 2px solid var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+
+    .image-row-card.selected .custom-checkbox {
+      background: var(--primary);
+      border-color: var(--primary);
+    }
+
+    .custom-checkbox::after {
+      content: '✓';
+      color: white;
+      font-size: 14px;
+      font-weight: bold;
+      display: none;
+    }
+
+    .image-row-card.selected .custom-checkbox::after {
+      display: block;
+    }
+
+    .images-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+    }
+
+    .image-wrapper {
+      aspect-ratio: 1;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #18181b;
+      border: 1px solid #3f3f46;
+      position: relative;
+    }
+
+    .image-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .image-row-card:hover .image-wrapper img {
+      transform: scale(1.05);
+    }
+
+    /* Validation Bar & Submit Button */
+    .submit-section {
+      text-align: center;
+      margin-top: 12px;
+    }
+
+    .validation-msg {
+      margin-bottom: 16px;
+      font-size: 0.9rem;
+      color: var(--warning);
+      min-height: 24px;
+    }
+
+    .submit-btn {
+      width: 100%;
+      max-width: 360px;
+      padding: 16px 32px;
+      border-radius: 12px;
+      border: none;
+      font-size: 1.1rem;
+      font-weight: 700;
+      font-family: inherit;
+      color: #fff;
+      background: linear-gradient(135deg, #0d9488 0%, #14b8a6 100%);
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(20, 184, 166, 0.4);
+      transition: all 0.3s ease;
+    }
+
+    .submit-btn:disabled {
+      background: #27272a;
+      color: #71717a;
+      cursor: not-allowed;
+      box-shadow: none;
+      border: 1px solid #3f3f46;
+      opacity: 0.6;
+    }
+
+    .submit-btn:not(:disabled):hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 25px rgba(20, 184, 166, 0.5);
+    }
+
+    .submit-btn:not(:disabled):active {
+      transform: translateY(0);
+    }
+
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Responsive styling */
+    @media (max-width: 640px) {
+      .container {
+        padding: 20px 14px;
+      }
+
+      .images-grid {
+        grid-template-columns: repeat(5, 1fr);
+        gap: 6px;
+      }
+
+      .app-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <header>
+      <h1>App Feature Selection</h1>
+      <p>Please select your preferred application name and pick between 5 to 10 sets of feature rows.</p>
+    </header>
+
+    <form id="surveyForm" onsubmit="event.preventDefault();">
+
+      <!-- PART 1: Application Name Selection -->
+      <section class="section-card">
+        <div class="section-title">
+          <span>Part 1: Select Application Name</span>
+          <span id="part1Status" class="badge badge-pending">Required (0/1)</span>
+        </div>
+
+        <div class="app-grid">
+          <!-- 10 App Names -->
+          <div class="app-option">
+            <input type="radio" id="app1" name="appName" value="PopPair">
+            <label for="app1" class="app-label">PopPair</label>
+          </div>
+          <div class="app-option">
+            <input type="radio" id="app2" name="appName" value="PairTrend">
+            <label for="app2" class="app-label">PairTrend</label>
+          </div>
+          <div class="app-option">
+            <input type="radio" id="app3" name="appName" value="Duocardz">
+            <label for="app3" class="app-label">Duocardz</label>
+          </div>
+          <div class="app-option">
+            <input type="radio" id="app4" name="appName" value="MatchBlitz">
+            <label for="app4" class="app-label">MatchBlitz</label>
+          </div>
+          <div class="app-option">
+            <input type="radio" id="app5" name="appName" value="FlipAroo">
+            <label for="app5" class="app-label">FlipAroo</label>
+          </div>
+          <div class="app-option">
+            <input type="radio" id="app6" name="appName" value="PeekAPair">
+            <label for="app6" class="app-label">PeekAPair</label>
+          </div>
+          <div class="app-option">
+            <input type="radio" id="app7" name="appName" value="Pairzzap">
+            <label for="app7" class="app-label">Pairzzap</label>
+          </div>
+          <div class="app-option">
+            <input type="radio" id="app8" name="appName" value="PairSnap">
+            <label for="app8" class="app-label">PairSnap</label>
+          </div>
+          <div class="app-option">
+            <input type="radio" id="app9" name="appName" value="FantastikPair">
+            <label for="app9" class="app-label">FantastikPair</label>
+          </div>
+          <div class="app-option">
+            <input type="radio" id="app10" name="appName" value="PairFrenzy">
+            <label for="app10" class="app-label">PairFrenzy</label>
+          </div>
+        </div>
+      </section>
+
+      <!-- PART 2: Image Rows Selection (16 Rows, 5 Images Each) -->
+      <section class="section-card">
+        <div class="section-title">
+          <span>Part 2: Select Rows (Min 5, Max 10)</span>
+          <span id="part2Status" class="badge badge-pending">Selected: 0 (Min 5, Max 10)</span>
+        </div>
+        <p class="instructions">Click anywhere on a row to select or deselect it.</p>
+
+        <div class="rows-container" id="rowsContainer">
+          <!-- 16 Rows will be dynamically rendered via JS -->
+        </div>
+      </section>
+
+      <!-- Submission Area -->
+      <div class="submit-section">
+        <div id="validationMessage" class="validation-msg">
+          Please select 1 Application Name and between 5 to 10 Rows to enable submission.
+        </div>
+        <button type="button" id="submitBtn" class="submit-btn" disabled onclick="handleSubmit()">
+          Submit Response
+        </button>
+      </div>
+
+    </form>
+  </div>
+
+
+  <script>
+    // ==========================================
+    // CONFIGURATION
+    // ==========================================
+    // Replace this placeholder with your deployed Google Apps Script Web App URL
+    const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx9rSAMbSlcgZus-PXOTIxCqnkWe_zBCF3gVACIcdDaIrEcQJN_cSjXOlYG_nJrJIAx/exec";
+
+    // 16 Rows of 5 Google Drive Public / Sample Image URLs each
+    // Google Drive direct view URLs follow pattern: https://drive.google.com/uc?export=view&id=FILE_ID
+    const ROW_IMAGE_DATA = [
+      {
+        rowId: 1,
+        title: "Birds",
+        images: [
+          "https://drive.google.com/file/d/1PRabCWUEsHSjZoX18u0TMm08WAmfMc2Z/view?usp=sharing",
+          "https://drive.google.com/file/d/1ZaehXVUb3DCXM-mT146FHpSx1PxL3v2N/view?usp=sharing",
+          "https://drive.google.com/file/d/1Hq8HVLQQ_PJTljhcifGjLNqIzeq1k8iY/view?usp=sharing",
+          "https://drive.google.com/file/d/1_9bnTLICUNPstDl5kEN4e_DNQWLIoMbi/view?usp=sharing",
+          "https://drive.google.com/file/d/1xOJgDy0g8_ujIJcKSGogeE6-nUdBGltv/view?usp=sharing"
+        ]
+      },
+      {
+        rowId: 2,
+        title: "Cats",
+        images: [
+          "https://drive.google.com/file/d/1t8a0Ib7OD5htIU37tZPwarm0Y6UwOalz/view?usp=sharing",
+          "https://drive.google.com/file/d/1zsqyxl98F0P_pPzs5zwcNKOIshUCELLa/view?usp=sharing",
+          "https://drive.google.com/file/d/1_8Omecc0Rgd2zSNxBXwgthpRap_HleXi/view?usp=sharing",
+          "https://drive.google.com/file/d/116Va9Lqfu-FyAJKNUhKWdhRKNCwzh6li/view?usp=sharing",
+          "https://drive.google.com/file/d/13m1MyiLm95RrayKDxGrYEdjNAQWF31LJ/view?usp=sharing"
+        ]
+      },
+      {
+        rowId: 3,
+        title: "Dogs",
+        images: [
+          "https://drive.google.com/file/d/1ySDFOGb3C0q5b0bar95hNFLgJk6XtyyE/view?usp=sharing",
+          "https://drive.google.com/file/d/1Y0ZoQMCcCjEAmC3mmogWvuKlCA3g_Mvl/view?usp=sharing",
+          "https://drive.google.com/file/d/1Semry3XlfKW9BtqGc0SIVbwDX2Me_EMy/view?usp=sharing",
+          "https://drive.google.com/file/d/1jwDcqUMghHmB8-iE_Xw77kNqtVxYPNCv/view?usp=sharing",
+          "https://drive.google.com/file/d/1DoJNbW-uvTIJwOkLf7c0_9XIry4XoS9h/view?usp=sharing"
+        ]
+      },
+      {
+        rowId: 4,
+        title: "Emotions",
+        images: [
+          "https://drive.google.com/file/d/1yKupetgmUARwe5pdg3obqeeQFBTbEgBX/view?usp=sharing",
+          "https://drive.google.com/file/d/1mF8Lo6sT8K6V--wUAfar3IrrvAUsHfD2/view?usp=sharing",
+          "https://drive.google.com/file/d/1YM3Bgn0jRxyKpjHBzUkfWirhyu2sqfQQ/view?usp=sharing",
+          "https://drive.google.com/file/d/1q4pH800ggrVUyIeUqIyOkxANRRKw6EKA/view?usp=sharing",
+          "https://drive.google.com/file/d/1fOSnsY_CQN8tuMnDwLzMzBG1RJMqaNFw/view?usp=sharing"
+        ]
+      },
+      {
+        rowId: 5,
+        title: "Flower",
+        images: [
+          "https://drive.google.com/file/d/1lQU22as6KQiz-gHwCEg8V5ZZ3DG_6dbK/view?usp=sharing",
+          "https://drive.google.com/file/d/1GPP_NhBOLHDvPTpUjOodYh5dkWrNcH5E/view?usp=sharing",
+          "https://drive.google.com/file/d/1Ur9mOWxQqb4MM-wxbEq3e_mXxBLhXqCw/view?usp=sharing",
+          "https://drive.google.com/file/d/1ug25ltsM5k9NBUCyIOTbVKqozE_vmdtr/view?usp=sharing",
+          "https://drive.google.com/file/d/1ZAIyQbJPh9t92ZSLbWiKB1zxeFc0I-B4/view?usp=sharing"
+        ]
+      },
+      {
+        rowId: 6,
+        title: "Fruit",
+        images: [
+          "https://drive.google.com/file/d/1K6kdCMET2w7VzTyrzgZKCNYQpXBf3mOF/view?usp=sharing",
+          "https://drive.google.com/file/d/1oBjbTw2S9pzMM5fGoE4PHU32yJIRqMty/view?usp=sharing",
+          "https://drive.google.com/file/d/19wPVIJ0tIEQBZFp8kwqvx037jgdWLxwc/view?usp=sharing",
+          "https://drive.google.com/file/d/1f-PB5RzGzBRvaGyGu3R9xnmeJePv0BPv/view?usp=sharing",
+          "https://drive.google.com/file/d/1odI9OjHuaNJFMWoGNRFrYurZOEuv-fWP/view?usp=sharing"
+        ]
+      },
+      {
+        rowId: 7,
+        title: "Glass Artwork",
+        images: [
+          "https://drive.google.com/file/d/1Keksqput6shKAhNHiP6qGTfVRON2SGIV/view?usp=sharing",
+          "https://drive.google.com/file/d/1lc7LVXj9hVSPzerR6R_suO3mumT-2Ibe/view?usp=sharing",
+          "https://drive.google.com/file/d/1HC5yOvzWdc9tIczx0tgHTGz3-L1Lt2M-/view?usp=sharing",
+          "https://drive.google.com/file/d/1qEMq3sqoqXPdoJyHv48JJTgt2qLHYA5u/view?usp=sharing",
+          "https://drive.google.com/file/d/1LdO8l7EpFdYA7rmwAo78HR-TurSbMq9_/view?usp=sharing"
+        ]
+      },
+      {
+        rowId: 8,
+        title: "Origami",
+        images: [
+          "https://drive.google.com/file/d/1Da9VrfdQSU3NYhJCDu1AvESHsQitXTBH/view?usp=sharing",
+          "https://drive.google.com/file/d/1mkJNkKZwWgzWaei3Snq1MJXEGdQirtsm/view?usp=sharing",
+          "https://drive.google.com/file/d/1ygFcpTSbf8M8S1K9dBGPEOlOzGpUNbFy/view?usp=sharing",
+          "https://drive.google.com/file/d/1i23m9vPBhgK4AJBs3AAoj2sOpfKYge_h/view?usp=sharing",
+          "https://drive.google.com/file/d/1JXew8G782J5ENi3aeQAOcL_97AlNs5u5/view?usp=sharing"
+        ]
+      },
+      {
+        rowId: 9,
+        title: "Paper Lantern",
+        images: [
+          "https://drive.google.com/file/d/1m0yCxIdKKgVOtYeC8Jg15G_U4_6TdO1b/view?usp=sharing",
+          "https://drive.google.com/file/d/1BxshTMdxGnimaBfWRr0iWSrTb02syu7d/view?usp=sharing",
+          "https://drive.google.com/file/d/18-vA5_HUwyeDNT3odyZxGeTzkMGTVwkj/view?usp=sharing",
+          "https://drive.google.com/file/d/1bcJ6L3WDZwoBu7zPQbRBYUVofaeWcEt-/view?usp=sharing",
+          "https://drive.google.com/file/d/1lAUjzIKyyJYs4f43Df6Y3kS6cagIG8z9/view?usp=sharing"
+        ]
+      },
+      {
+        rowId: 10,
+        title: "Silhouettes",
+        images: [
+          "https://drive.google.com/file/d/1auJo0FW8u1DjB-I946cazKZUtiApSD2n/view?usp=sharing",
+          "https://drive.google.com/file/d/1HLEaYRX9wGrFqMoIWWFWQ1BUVBtItL5g/view?usp=sharing",
+          "https://drive.google.com/file/d/18MWCpyeeQKUVZfLuJkJvgmMgooACUZYk/view?usp=sharing",
+          "https://drive.google.com/file/d/1HNwhwc0GGC7jcjoKgMKLAdL1jzFOkSM7/view?usp=sharing",
+          "https://drive.google.com/file/d/12bXUf4JF1S8M7t8EwB4A6lEMnuPWPnp3/view?usp=sharing"
+        ]
+      },
+      {
+        rowId: 11,
+        title: "Smiley",
+        images: [
+          "https://drive.google.com/file/d/1O22kuGyK75ZkfpgvIGk8oarJFfXN5QjS/view?usp=sharing",
+          "https://drive.google.com/file/d/1tlvDLo4mtJWKfwA2IShlihfdhRmHOWxL/view?usp=sharing",
+          "https://drive.google.com/file/d/1Oay5Udq6JOxWUbQXINKbO_HINtAQ1r6A/view?usp=sharing",
+          "https://drive.google.com/file/d/1ue6N0PkX7BQrPugEnf0koWQA9B2foFY2/view?usp=sharing",
+          "https://drive.google.com/file/d/1ht5VE7BRBa0DO6-0eZB4TyH54K9MtxlK/view?usp=sharing"
+        ]
+      },
+      {
+        rowId: 12,
+        title: "Sports Car",
+        images: [
+          "https://drive.google.com/file/d/1nFp323TVJTTRd1KmOeDy_yeP8udgj5dW/view?usp=sharing",
+          "https://drive.google.com/file/d/1SjO29rs7uSIIGCG38MvZ_uWUheBA73CY/view?usp=sharing",
+          "https://drive.google.com/file/d/1qi2A2M-WfAPIWIHOWzWw4Prunl8eSPXQ/view?usp=sharing",
+          "https://drive.google.com/file/d/1x_4u0gg6NlVhDiCv5FoqSnY5_r0zGv0h/view?usp=sharing",
+          "https://drive.google.com/file/d/1qUAxcipM_mtTOSWPQQMvFLgEczqwS8yw/view?usp=sharing"
+        ]
+      },
+      {
+        rowId: 13,
+        title: "Sports Icon",
+        images: [
+          "https://drive.google.com/file/d/1fgqdKRvxMT2HDM64YHCScVTbaiJu3f2f/view?usp=sharing",
+          "https://drive.google.com/file/d/1U2d8gFSKZVMVWYjzguQzjQyHI7k72Z0s/view?usp=sharing",
+          "https://drive.google.com/file/d/1FJQ2kV1QIh67bfg3HitiEpgtVuD-dwaz/view?usp=sharing",
+          "https://drive.google.com/file/d/1-b4aR4L9M2F9G9_zNuwyLpFRrdBQ4P2d/view?usp=sharing",
+          "https://drive.google.com/file/d/1uUMGhf-GVaj-fMVss5l-RtksbIXA2z3f/view?usp=sharing"
+        ]
+      },
+      {
+        rowId: 14,
+        title: "Sports Car II",
+        images: [
+          "https://drive.google.com/file/d/1dd_ofGEEXLsZyNWaFj_v8IKTpjxSUwQj/view?usp=sharing",
+          "https://drive.google.com/file/d/1BV2aVk1tssZ2w0b1Rm-g0Jt-PJBKeeZl/view?usp=sharing",
+          "https://drive.google.com/file/d/1NzcfmYzG9AIAlQL9wkMkEOk2Y9XeMdxS/view?usp=sharing",
+          "https://drive.google.com/file/d/1xTi7anro5YiRJCgmC7YKxDEtjM1KqaYS/view?usp=sharing",
+          "https://drive.google.com/file/d/1RICuRy0oKLBvLBe12Bwws2ksiPq7eyX3/view?usp=sharing"
+        ]
+      },
+      {
+        rowId: 15,
+        title: "Umbrella",
+        images: [
+          "https://drive.google.com/file/d/1l8xycY9sh65vOYh-joxTeRBrEUHdy2nu/view?usp=sharing",
+          "https://drive.google.com/file/d/1HX9PurSdhI6nQUwCwlrLTc--7719w01T/view?usp=sharing",
+          "https://drive.google.com/file/d/1fkK5Qu57r4pWOdJ9meM6gpDeBRTeQhj0/view?usp=sharing",
+          "https://drive.google.com/file/d/1Hc8KiuP2nIYzhvMozJRcTvzwwtExtrEe/view?usp=sharing",
+          "https://drive.google.com/file/d/1EjqSGpik8DcmzSSX-inaaRLSee4xbvyx/view?usp=sharing"
+        ]
+      },
+      {
+        rowId: 16,
+        title: "Vintage",
+        images: [
+          "https://drive.google.com/file/d/12gkLtMf7eqjAXVFFeTVwz3az3ee-5Y1H/view?usp=sharing",
+          "https://drive.google.com/file/d/1WOLgs6uPbM5PZHdWkOim-9Vcg-srcccF/view?usp=sharing",
+          "https://drive.google.com/file/d/1Ye3U3q3uBTbwFyuGgLVgI0Vc_r9h9y3s/view?usp=sharing",
+          "https://drive.google.com/file/d/1m7nr9mLgmDlqTsopHj7fAxAbPi17HrgZ/view?usp=sharing",
+          "https://drive.google.com/file/d/1_QEZG1bdkSohMJxJg6G2RhRIQ4VAdzV2/view?usp=sharing"
+        ]
+      }
+    ];
+
+    // State Tracking
+    const selectedRows = new Set();
+    let selectedApp = "";
+
+    // DOM Elements
+    const rowsContainer = document.getElementById('rowsContainer');
+    const submitBtn = document.getElementById('submitBtn');
+    const validationMessage = document.getElementById('validationMessage');
+    const part1Status = document.getElementById('part1Status');
+    const part2Status = document.getElementById('part2Status');
+    const successOverlay = document.getElementById('successOverlay');
+
+    // Helper function to extract Google Drive File ID and return direct image URL
+    function formatGoogleDriveImageUrl(url) {
+      if (!url) return '';
+      // If it's already a direct thumbnail or raw image URL (lh3.googleusercontent.com or uc?export=view)
+      if (url.includes('lh3.googleusercontent.com') || url.includes('export=view')) {
+        return url;
+      }
+      // Match file ID from /file/d/FILE_ID/ or id=FILE_ID
+      const fileIdMatch = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+      if (fileIdMatch && fileIdMatch[1]) {
+        return `https://lh3.googleusercontent.com/d/${fileIdMatch[1]}`;
+      }
+      return url;
+    }
+
+    // Render 16 Image Rows
+    function renderRows() {
+      rowsContainer.innerHTML = '';
+      ROW_IMAGE_DATA.forEach(row => {
+        const card = document.createElement('div');
+        card.className = 'image-row-card';
+        card.dataset.rowId = row.rowId;
+        card.onclick = () => toggleRowSelection(row.rowId, card);
+
+        const rowHeader = document.createElement('div');
+        rowHeader.className = 'row-header';
+
+        const checkWrapper = document.createElement('div');
+        checkWrapper.className = 'row-checkbox-wrapper';
+
+        const customCheck = document.createElement('div');
+        customCheck.className = 'custom-checkbox';
+
+        const label = document.createElement('span');
+        label.textContent = row.title || `Row ${row.rowId}`;
+
+        checkWrapper.appendChild(customCheck);
+        checkWrapper.appendChild(label);
+        rowHeader.appendChild(checkWrapper);
+
+        const imagesGrid = document.createElement('div');
+        imagesGrid.className = 'images-grid';
+
+        row.images.forEach(imgUrl => {
+          const imgWrapper = document.createElement('div');
+          imgWrapper.className = 'image-wrapper';
+          const img = document.createElement('img');
+          img.src = formatGoogleDriveImageUrl(imgUrl);
+          img.alt = `Row ${row.rowId} Image`;
+          img.loading = 'lazy';
+          imgWrapper.appendChild(img);
+          imagesGrid.appendChild(imgWrapper);
+        });
+
+        card.appendChild(rowHeader);
+        card.appendChild(imagesGrid);
+        rowsContainer.appendChild(card);
+      });
+    }
+
+    // Toggle Row Selection
+    function toggleRowSelection(rowId, cardElement) {
+      if (selectedRows.has(rowId)) {
+        selectedRows.delete(rowId);
+        cardElement.classList.remove('selected');
+      } else {
+        selectedRows.add(rowId);
+        cardElement.classList.add('selected');
+      }
+      validateForm();
+    }
+
+    // Radio Listeners
+    document.querySelectorAll('input[name="appName"]').forEach(radio => {
+      radio.addEventListener('change', (e) => {
+        selectedApp = e.target.value;
+        validateForm();
+      });
+    });
+
+    // Form Validation Logic
+    function validateForm() {
+      const rowCount = selectedRows.size;
+      const isPart1Valid = selectedApp !== "";
+      const isPart2Valid = rowCount >= 5 && rowCount <= 10;
+
+      // Update Part 1 Badge
+      if (isPart1Valid) {
+        part1Status.textContent = `Selected: ${selectedApp}`;
+        part1Status.className = 'badge badge-valid';
+      } else {
+        part1Status.textContent = 'Required (0/1)';
+        part1Status.className = 'badge badge-pending';
+      }
+
+      // Update Part 2 Badge
+      if (rowCount >= 5 && rowCount <= 10) {
+        part2Status.textContent = `Selected: ${rowCount} (Valid)`;
+        part2Status.className = 'badge badge-valid';
+      } else if (rowCount > 10) {
+        part2Status.textContent = `Selected: ${rowCount} (Max 10 Exceeded)`;
+        part2Status.className = 'badge badge-error';
+      } else {
+        part2Status.textContent = `Selected: ${rowCount} (Min 5, Max 10)`;
+        part2Status.className = 'badge badge-pending';
+      }
+
+      // Update Validation Message & Submit Button state
+      if (isPart1Valid && isPart2Valid) {
+        submitBtn.disabled = false;
+        validationMessage.style.color = "var(--success)";
+        validationMessage.textContent = "All criteria met! Ready to submit.";
+      } else {
+        submitBtn.disabled = true;
+        validationMessage.style.color = "var(--warning)";
+
+        let msgs = [];
+        if (!isPart1Valid) msgs.push("Select 1 Application Name");
+        if (rowCount < 5) msgs.push(`Select at least ${5 - rowCount} more Row(s)`);
+        if (rowCount > 10) msgs.push(`Deselect ${rowCount - 10} Row(s)`);
+
+        validationMessage.textContent = msgs.join(" • ");
+      }
+    }
+
+    // Form Submission Handling
+    function handleSubmit() {
+      if (submitBtn.disabled) return;
+
+      const selectedRowTitles = Array.from(selectedRows)
+        .map(id => {
+          const item = ROW_IMAGE_DATA.find(r => r.rowId === id);
+          return item ? item.title : `Row ${id}`;
+        });
+
+      const payload = {
+        selectedApp: selectedApp,
+        selectedRowIds: Array.from(selectedRows).sort((a, b) => a - b),
+        selectedRowTitles: selectedRowTitles,
+        timestamp: new Date().toISOString()
+      };
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Submitting...";
+
+      // Submit data in background
+      if (GOOGLE_APPS_SCRIPT_URL) {
+        try {
+          const blob = new Blob([JSON.stringify(payload)], { type: 'text/plain' });
+          if (navigator.sendBeacon) {
+            navigator.sendBeacon(GOOGLE_APPS_SCRIPT_URL, blob);
+          } else {
+            fetch(GOOGLE_APPS_SCRIPT_URL, {
+              method: 'POST',
+              mode: 'no-cors',
+              body: JSON.stringify(payload)
+            });
+          }
+        } catch (e) {
+          console.error("Submission error:", e);
+        }
+      }
+
+      // Replace the container contents immediately with the success message
+      const container = document.querySelector('.container');
+      container.innerHTML = `
+        <div style="text-align: center; padding: 60px 20px;">
+          <div style="width: 80px; height: 80px; background: rgba(20, 184, 166, 0.2); border: 2px solid #2dd4bf; color: #2dd4bf; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 40px; margin: 0 auto 24px auto;">✓</div>
+          <h2 style="font-size: 1.75rem; color: #f5f5f5; margin-bottom: 16px;">Thanks you for your help! It is much appreciated!</h2>
+          <p style="color: #a3a3a3; font-size: 1rem;">You may now use the site menu to navigate away.</p>
+        </div>
+      `;
+
+      // Scroll to the top of the container to ensure visibility
+      container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // Initialize
+    renderRows();
+  </script>
+</body>
+
+</html>
